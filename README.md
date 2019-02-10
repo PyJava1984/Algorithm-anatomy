@@ -24,7 +24,8 @@ Third Pass:
 ( 1 2 4 5 8 ) –> ( 1 2 4 5 8 )
 ( 1 2 4 5 8 ) –> ( 1 2 4 5 8 )
 
-`// Java program for implementation of Bubble Sort 
+`
+Java program for implementation of Bubble Sort: 
 class BubbleSort 
 { 
     void bubbleSort(int arr[]) 
@@ -39,9 +40,8 @@ class BubbleSort
                     arr[j] = arr[j+1]; 
                     arr[j+1] = temp; 
                 } 
-    } 
-  
-    /* Prints the array */
+    }
+    
     void printArray(int arr[]) 
     { 
         int n = arr.length; 
@@ -59,7 +59,8 @@ class BubbleSort
         System.out.println("Sorted array"); 
         ob.printArray(arr); 
     } 
-} `
+} 
+`
 
 Output: 
 `Sorted array:
