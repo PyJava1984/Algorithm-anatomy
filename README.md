@@ -26,7 +26,7 @@ Third Pass:
 
 
 Java program for implementation of Bubble Sort: 
-```class BubbleSort 
+class BubbleSort 
 { 
     void bubbleSort(int arr[]) 
     { 
@@ -59,7 +59,7 @@ Java program for implementation of Bubble Sort:
         System.out.println("Sorted array"); 
         ob.printArray(arr); 
     } 
-} ```
+}
 
 Output: 
 `Sorted array:
