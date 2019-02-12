@@ -1,5 +1,158 @@
 # Algorithm-anatomy
 
+### The K Nearest Neighbor Classifier :
+
+#### Getting the distance between two data elements
+
+I will use a float [ ] to represent a single data element. We will use the getDistanceBetween method to get the distance between 2 float arrays
+
+Here, X_COORDINATE , Y_COORDINATE and Z_COORDINATE have the values 0 , 1 and 2 respectively as per the value indices in their float [ ] .
+
+private Float getDistanceBetween(@NonNull float[] dataElement1, @NonNull float[] dataElement2) {
+    int x1 =  Math.round(dataElement1[X_COORDINATE_INDEX]   ) ;
+    int y1 =  Math.round(dataElement1[Y_COORDINATE_INDEX]   ) ;
+    int z1 =  Math.round(dataElement1[Z_COORDINATE_INDEX ] ) ;
+    int x2 =   Math.round(dataElement2[X_COORDINATE_INDEX]   ) ;
+    int y2 =  Math.round(dataElement2[Y_COORDINATE_INDEX]   ) ;
+    int z2 =  Math.round(dataElement2[Z_COORDINATE_INDEX]   ) ;
+    int term1 = (x2 - x1) * (x2 - x1);
+    int term2 = (y2 - y1) * (y2 - y1);
+    int term3 = (z2 - z1) * (z2 - z1);
+    int sum = term1 + term2 + term3;
+    String convertedSum = Integer.toString(sum);
+    double convertedToDoubleSum = Double.parseDouble(convertedSum);
+    double distance = Math.abs (Math.sqrt (convertedToDoubleSum ) );
+    String convertedDistance = Double.toString(distance);
+    return Float.parseFloat(convertedDistance);
+}
+
+Determining the value of K
+
+The value of K determines the number of nearest neighbors to consider while classification.
+
+    K = sqrt ( number of samples in dataset ) / 2
+
+private int determineK () {
+    size = data.size();
+    String sizeString = Integer.toString( size ) ;
+    sizeDouble = Double.parseDouble( sizeString );
+    root = Math.sqrt( sizeDouble );
+    double rawK = root / 2 ;
+    int num = Math.round( ( float )rawK ) ;
+    if ( num%2 != 0 ) {
+        return num ;
+    }
+    else {
+        return num - 1 ;
+    }
+}
+
+We simply check whether the K is odd or even. An odd number is convenient for majority voting. if the number is even , then we return the previous number ( number -1 ).
+Wrapping Up
+
+for (int index = 0; index < trainingData.size(); index++) {
+    float distance = getDistanceBetween(dataPoint, trainingData.get(index));
+    distances.add(distance);
+    distancesClone.add(distance);
+}
+
+Collections.sort(distances, new Comparator<Float>() {
+    @Override
+    public int compare(Float o1, Float o2) {
+        return o1.compareTo(o2);
+    }
+});
+
+int K = determineK() ;
+List<Float >shortestDistances= distances.subList( 0 , K  ) ;
+for ( float element : shortestDistances ) {
+    Integer indexOnClone = distancesClone.indexOf(element);
+    float[] nearestNeighbour = trainingData.get(indexOnClone);
+    if (nearestNeighbour [ 3] == 1) {
+        CLASS_1.add( nearestNeighbour ) ;
+    }
+    else if (nearestNeighbour [ 3] == 2) {
+        CLASS_2.add( nearestNeighbour ) ;
+    }
+}
+if ( CLASS_1.size() > CLASS_2 .size() ){
+    return CLASS_1
+}
+else {
+    return CLASS_2
+
+}
+
+    We loop through the elements in the training data.
+    We add the calculated distance ( by getDistanceBetween )in two lists namely distances and distancesClone .
+    Sort only the distances in ascending order.
+    Determine K by the determineK() method.
+    Get the K number of elements from the sorted list ( in ascending ).
+    Loop through the elements of the sorted list.
+    Get the index of each element from distancesClone using the indexOf method.
+    Sort them into different lists according to their classes.
+    if CLASS_1 has the greatest size ( or the greatest number of elements ) predict the output as CLASS_1 . ( i.e. by majority )
+    
+Nearest Neighbor is also called as Instance-based Learning or Collaborative Filtering. It is a useful data mining technique, which allow us to use our past data with known output values to predict an output value for the new incoming data.
+
+public class KNNDemo {
+	
+	/**
+	 * This method is to load the data set.
+	 * @param fileName
+	 * @return
+	 * @throws IOException
+	 */
+	public static Instances getDataSet(String fileName) throws IOException {
+		/**
+		 * we can set the file i.e., loader.setFile("finename") to load the data
+		 */
+		int classIdx = 1;
+		/** the arffloader to load the arff file */
+		ArffLoader loader = new ArffLoader();
+		/** load the traing data */
+		loader.setSource(KNNDemo.class.getResourceAsStream("/" + fileName));
+		/**
+		 * we can also set the file like loader3.setFile(new
+		 * File("test-confused.arff"));
+		 */
+		//loader.setFile(new File(fileName));
+		Instances dataSet = loader.getDataSet();
+		/** set the index based on the data given in the arff files */
+		dataSet.setClassIndex(classIdx);
+		return dataSet;
+	}
+
+
+	/**
+	 * @param args
+	 * @throws Exception 
+	 */
+	public static void process() throws Exception {
+		
+		 
+		Instances data = getDataSet("data.arff");
+		data.setClassIndex(data.numAttributes() - 1);
+		//k - the number of nearest neighbors to use for prediction
+		Classifier ibk = new IBk(1);		
+		ibk.buildClassifier(data);
+	
+		System.out.println(ibk);
+       
+        Evaluation eval = new Evaluation(data);
+        eval.evaluateModel(ibk, data);
+		/** Print the algorithm summary */
+		System.out.println("** KNN Demo  **");
+		System.out.println(eval.toSummaryString());
+	    System.out.println(eval.toClassDetailsString());
+		System.out.println(eval.toMatrixString());
+		
+		
+
+	}
+
+}
+
 ### Closest leaf to a given node in Binary Tree :
 
 Given a Binary Tree and a node x in it, find distance of the closest leaf to x in Binary Tree. If given node itself is a leaf, then distance is 0.
