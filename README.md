@@ -272,7 +272,7 @@ If r > l
      4. Merge the two halves sorted in step 2 and 3:
              Call merge(arr, l, m, r)`
 	    
-`class MergeSort 
+class MergeSort 
 { 
     // Merges two subarrays of arr[]. 
     // First subarray is arr[l..m] 
@@ -374,6 +374,6 @@ If r > l
         System.out.println("\nSorted array"); 
         printArray(arr); 
     } 
-} `
+}
 
 
